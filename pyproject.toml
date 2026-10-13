@@ -1,0 +1,24 @@
+[project]
+name = "error-handling"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Thomas Aglassinger", email = "roskakori@users.sourceforge.net" },
+    { name = "Jakob Schnurrer" },
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+sum_lines = "error_handling.sum_lines:main"
+
+[build-system]
+requires = ["uv_build>=0.12.24,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "prek>=0.5.5",
+    "ty>=0.0.86",
+]

@@ -1,0 +1,9 @@
+# By default assume text
+* text=auto
+
+# Always use LF even on Windows
+*.sh text eol=lf
+
+# Binary files
+*.key binary
+*.pdf binary
