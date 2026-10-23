@@ -13,8 +13,8 @@ def main():
     parser.add_argument("text_path", metavar="FILE", type=Path)
     arguments = parser.parse_args()
     try:
-        print(sum_of_lines_5_with_warning(arguments.text_path))
-    except (OSError, DataError) as error:
+        print(sum_of_lines_2_with_empty_lines(arguments.text_path))
+    except (OSError, NumberLineError) as error:
         print(f"Error: {error}")
 
 
@@ -39,7 +39,7 @@ def sum_of_lines_2_with_empty_lines(text_path: Path) -> int:
     return result  # happy
 
 
-class DataError(ValueError):
+class NumberLineError(ValueError):
     def __init__(self, path: Path, line_number: int, line: str):
         self._path = path
         self._line_number = line_number
@@ -55,9 +55,9 @@ class DataError(ValueError):
 
 class ManyDataError(ValueError):
     def __init__(self):
-        self._data_errors: list[DataError] = []
+        self._data_errors: list[NumberLineError] = []
 
-    def add(self, data_error: DataError):
+    def add(self, data_error: NumberLineError):
         self._data_errors.append(data_error)
 
 
@@ -71,7 +71,7 @@ def sum_of_lines_3_with_text_error(text_path: Path) -> int:
             try:
                 result += int(line)
             except ValueError:
-                raise DataError(text_path, line_number, line)
+                raise NumberLineError(text_path, line_number, line)
     text_file.close()
     return result
 
@@ -87,7 +87,7 @@ def sum_of_lines_4_with_cleanup(text_path: Path) -> int:
                 try:  # error
                     result += int(line)  # happy
                 except ValueError:  # error
-                    raise DataError(text_path, line_number, line)  # error
+                    raise NumberLineError(text_path, line_number, line)  # error
     finally:  # error
         text_file.close()  # happy
     return result  # happy
@@ -106,7 +106,7 @@ def sum_of_lines_5_with_warning(text_path: Path) -> int:
                     result += int(line)  # happy
                     has_lines = True  # warning
                 except ValueError:  # error
-                    raise DataError(text_path, line_number, line)  # error
+                    raise NumberLineError(text_path, line_number, line)  # error
     finally:  # error
         text_file.close()  # happy
     if not has_lines:  # warning
